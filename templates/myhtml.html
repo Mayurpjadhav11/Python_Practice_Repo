@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theater Tabs</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .tabs { display: flex; cursor: pointer; margin-bottom: 10px; }
+        .tab { padding: 10px 20px; border: 1px solid #ccc; border-bottom: none; background: #eee; }
+        .tab.active { background: #fff; font-weight: bold; }
+        .content { border: 1px solid #ccc; padding: 20px; }
+        .movie-tabs { margin-top: 20px; }
+        .movie-tab { padding: 5px 10px; cursor: pointer; border: 1px solid #aaa; display: inline-block; margin-right: 5px; background: #ddd; }
+        .movie-tab.active { background: #bbb; font-weight: bold; }
+        .movie-content { margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<h1>Welcome to Theaters</h1>
+
+<div class="tabs">
+    <div class="tab active" onclick="showTheater(0)">Mayur's Theater</div>
+    <div class="tab" onclick="showTheater(1)">Hardik's Theater</div>
+    <div class="tab" onclick="showTheater(2)">Kavin's Theater</div>
+</div>
+
+<div class="content" id="theater-content"></div>
+
+<script>
+const theaters = [
+    {
+        name: "Mayur's Theater",
+        movies: [
+            {name: "Inception", similar: ["Interstellar", "Shutter Island"], rating: "8.8"},
+            {name: "Joker", similar: ["Taxi Driver", "The Dark Knight"], rating: "8.4"}
+        ]
+    },
+    {
+        name: "Hardik's Theater",
+        movies: [
+            {name: "Avengers: Endgame", similar: ["Infinity War", "Iron Man"], rating: "8.4"},
+            {name: "Spider-Man: No Way Home", similar: ["Spider-Man 2", "Doctor Strange"], rating: "8.3"}
+        ]
+    },
+    {
+        name: "Kavin's Theater",
+        movies: [
+            {name: "KGF", similar: ["KGF 2", "Bahubali"], rating: "8.2"},
+            {name: "Pushpa", similar: ["Ala Vaikunthapurramuloo", "RRR"], rating: "7.6"}
+        ]
+    }
+];
+
+let currentTheater = 0;
+let currentMovie = 0;
+
+function showTheater(index) {
+    currentTheater = index;
+    currentMovie = 0;
+    document.querySelectorAll('.tab').forEach((t, i) => {
+        t.classList.toggle('active', i === index);
+    });
+    renderTheater();
+}
+
+function renderTheater() {
+    const theater = theaters[currentTheater];
+    const movie = theater.movies[currentMovie];
+
+    const movieTabs = theater.movies.map((m, i) => 
+        `<div class="movie-tab ${i === currentMovie ? 'active' : ''}" onclick="showMovie(${i})">${m.name}</div>`
+    ).join('');
+
+    const similarMovies = movie.similar.map(s => `<li>${s}</li>`).join('');
+
+    document.getElementById('theater-content').innerHTML = `
+        <h2>${theater.name}</h2>
+        <div class="movie-tabs">${movieTabs}</div>
+        <div class="movie-content">
+            <h3>Similar Movies to ${movie.name}:</h3>
+            <ul>${similarMovies}</ul>
+            <p><strong>IMDB Rating:</strong> ${movie.rating}</p>
+        </div>
+    `;
+}
+
+function showMovie(index) {
+    currentMovie = index;
+    renderTheater();
+}
+
+renderTheater();
+</script>
+
+</body>
+</html>
