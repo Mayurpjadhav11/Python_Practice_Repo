@@ -18,4 +18,6 @@ class Solution:
 
         return dummy.next
 
+print("done")
+
         
